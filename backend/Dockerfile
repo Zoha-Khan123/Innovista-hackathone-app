@@ -18,8 +18,8 @@ RUN uv pip install --system -r pyproject.toml
 # Copy application files
 COPY . .
 
-# Expose FastAPI port
-EXPOSE 8000
+# Expose Cloud Run default port
+EXPOSE 8080
 
-# Run the server
-CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the server using Cloud Run's dynamic PORT environment variable (defaulting to 8080)
+CMD ["sh", "-c", "uvicorn server:app --host 0.0.0.0 --port ${PORT:-8080}"]
